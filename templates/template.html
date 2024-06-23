@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiwenpedia Page Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: center;
+            background-color: white; /* Same color as main text background */
+        }
+        #header-content {
+            display: flex;
+            align-items: center;
+            width: 50%; /* Same width as #main-content */
+        }
+        #logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
+        }
+        #logo img {
+            width: 150%;
+            height: auto;
+            display: block;
+            opacity: 1;
+        }
+        #search-bar {
+            flex-grow: 1;
+            text-align: left;
+        }
+        #search-bar input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+        }
+        #search-bar button {
+            padding: 5px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        #title {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+        }
+        #content {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+        }
+        #main-content {
+            width: 50%;
+        }
+        #toc {
+            border: 1px solid #e0e0e0;
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: auto; /* Adjust width to fit content */
+            display: inline-block; /* Fit box size to content */
+        }
+        #toc ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #toc ul li {
+            margin-bottom: 5px;
+        }
+        h1, h2, h3 {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        footer {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 80%;
+            border-top: 1px solid #e0e0e0;
+            transform: translateX(-50%);
+        }
+        #footer-content {
+            width: 70%; /* Same width as #main-content */
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header-content">
+            <div id="logo">
+                <img src="images/logo.png">
+            </div>
+            <div id="search-bar">
+                <form action="/search" method="get">
+                    <input type="text" name="query" placeholder="Search...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    
+    <div id = "title">
+        <h2>{{ title }}</h2>
+    </div>
+
+    <div id="content">
+        <div id="main-content">
+            <h2>Introduction</h2>
+            <p>{{ intro }}</p>
+        
+            <div id="toc">
+                <h2>Contents</h2>
+                <ul>
+                    {% for topic in TOC %}
+                    <li><a href="#section{{ loop.index }}">{{ topic }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        
+            {% for section, topic in zip(sections, TOC) %}
+            <h2 id="section{{ loop.index }}">{{ topic }}</h2>
+            <p>{{ section|safe }}</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-content">
+            <p>&copy; 2024 Shiwenpedia</p>
+        </div>
+    </footer>
+</body>
+</html>
