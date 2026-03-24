@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title }} · FakeWiki</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --panel: #f8fafc;
+            --text: #1d2433;
+            --muted: #687389;
+            --link: #2457d6;
+            --border: #dde3ee;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        header {
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+        }
+        .header-inner,
+        .content {
+            max-width: 980px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding-top: 14px;
+            padding-bottom: 14px;
+        }
+        .brand {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        input[type="text"] {
+            width: 280px;
+            max-width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: var(--text);
+            color: white;
+            cursor: pointer;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 32px;
+            padding-top: 32px;
+            padding-bottom: 64px;
+        }
+        article h1 {
+            font-size: 40px;
+            margin: 0 0 12px;
+        }
+        article p, article li {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+        article h2 {
+            font-size: 28px;
+            margin-top: 36px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .intro {
+            font-size: 20px;
+            color: #2d3748;
+        }
+        aside {
+            align-self: start;
+            position: sticky;
+            top: 20px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        aside h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        aside ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        aside li + li {
+            margin-top: 10px;
+        }
+        a {
+            color: var(--link);
+        }
+        @media (max-width: 860px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            aside {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a class="brand" href="{{ url_for('index') }}">FakeWiki</a>
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="query" placeholder="Generate another page" />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="content">
+        <article>
+            <h1>{{ page.title }}</h1>
+            <p class="intro">{{ page.intro }}</p>
+
+            {% for section in page.sections %}
+            <section>
+                <h2>{{ section.title }}</h2>
+                {% for paragraph in section.paragraphs %}
+                <p>{{ paragraph }}</p>
+                {% endfor %}
+            </section>
+            {% endfor %}
+        </article>
+
+        <aside>
+            <h3>Continue browsing</h3>
+            <ul>
+                {% for item in link_targets %}
+                <li><a href="{{ url_for('view_page', slug=item.slug) }}">{{ item.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </aside>
+    </main>
+</body>
+</html>

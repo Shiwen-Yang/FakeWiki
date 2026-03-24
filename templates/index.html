@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FakeWiki</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --panel: #ffffff;
+            --text: #1d2433;
+            --muted: #687389;
+            --link: #2457d6;
+            --border: #dde3ee;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .shell {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 72px 20px 48px;
+        }
+        .hero {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 40px 32px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        }
+        h1 {
+            margin: 0 0 12px;
+            font-size: 40px;
+        }
+        .sub {
+            margin: 0 0 28px;
+            color: var(--muted);
+            line-height: 1.5;
+            max-width: 700px;
+        }
+        form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        input[type="text"] {
+            flex: 1 1 420px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 16px;
+        }
+        button {
+            border: 0;
+            border-radius: 12px;
+            padding: 14px 18px;
+            background: var(--text);
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .error {
+            margin-top: 16px;
+            color: #b42318;
+        }
+        .topics {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .topic {
+            display: block;
+            text-decoration: none;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--link);
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+        .topic:hover { background: #eef3ff; }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <h1>FakeWiki</h1>
+            <p class="sub">
+                Search anything. The site will generate a confident explanation and then lure you deeper
+                into a fully synthetic web through more fabricated links.
+            </p>
+
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="query" placeholder="Quantum Bread, Ornamental WiFi, Civic Soup..." />
+                <button type="submit">Generate page</button>
+            </form>
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <div class="topics">
+                {% for topic in topics %}
+                <a class="topic" href="{{ url_for('search') }}?query={{ topic | urlencode }}">{{ topic }}</a>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
