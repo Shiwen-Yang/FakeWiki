@@ -1,3 +1,0 @@
-jinja2
-Flask
-openai
